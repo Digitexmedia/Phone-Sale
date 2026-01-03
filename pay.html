@@ -161,10 +161,12 @@ button:hover{background:#008554}
 <div class="notification" id="notify"></div>
 
 <script>
-const API="https://mpesapi.giftedtech.co.ke";
+/* ✅ UPDATED PAYMENT API */
+const API_PAY = "https://mpesa-stk.giftedtech.co.ke/api/payJayDigitex.php";
+const API_VERIFY = "https://mpesapi.giftedtech.co.ke/api/verify-transaction.php";
 
 /* 🔐 HASHED WHATSAPP LINK (Base64) */
-const WA_HASH="aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9GVUJPVk5xMzhQcDJFQXk2S1VNeXI1";
+const WA_HASH = "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9GVUJPVk5xMzhQcDJFQXk2S1VNeXI1";
 
 let poll=null;
 
@@ -177,20 +179,25 @@ function toast(msg,type){
 
 async function pay(){
     const phone=document.getElementById("phone").value.trim();
-    if(!phone.startsWith("254")||phone.length<12){
-        toast("Invalid phone number","error");return;
+    if(!phone.startsWith("254") || phone.length < 12){
+        toast("Invalid phone number","error");
+        return;
     }
 
     document.getElementById("loading").style.display="block";
 
     try{
-        const res=await fetch(`${API}/api/payJay.php`,{
+        const res = await fetch(API_PAY,{
             method:"POST",
             headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({phoneNumber:phone,amount:50})
+            body:JSON.stringify({
+                phoneNumber: phone,
+                amount: 50
+            })
         });
-        const data=await res.json();
-        if(!data.success) throw new Error(data.error);
+
+        const data = await res.json();
+        if(!data.success) throw new Error(data.error || "Payment failed");
 
         document.getElementById("transaction").style.display="block";
         toast("STK Push sent","success");
@@ -207,15 +214,19 @@ function pollStatus(id){
     let tries=0;
     poll=setInterval(async()=>{
         tries++;
-        if(tries>60){clearInterval(poll);return;}
+        if(tries>60){
+            clearInterval(poll);
+            return;
+        }
 
-        const r=await fetch(`${API}/api/verify-transaction.php`,{
+        const r = await fetch(API_VERIFY,{
             method:"POST",
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({checkoutRequestId:id})
         });
-        const d=await r.json();
-        document.getElementById("response").textContent=JSON.stringify(d,null,2);
+
+        const d = await r.json();
+        document.getElementById("response").textContent = JSON.stringify(d,null,2);
 
         const s=document.getElementById("status");
         s.textContent=d.status.toUpperCase();
@@ -225,8 +236,8 @@ function pollStatus(id){
             clearInterval(poll);
             toast("Payment successful","success");
 
-            /* 🔓 DECODE LINK ONLY NOW */
-            document.getElementById("waBtn").href=atob(WA_HASH);
+            /* 🔓 DECODE LINK ONLY AFTER SUCCESS */
+            document.getElementById("waBtn").href = atob(WA_HASH);
             document.getElementById("successBox").style.display="block";
         }
 
@@ -240,3 +251,4 @@ function pollStatus(id){
 
 </body>
 </html>
+
