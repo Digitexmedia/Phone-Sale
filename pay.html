@@ -10,106 +10,75 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Tahoma,Verdana}
 body{
-    background:linear-gradient(135deg,#006400,#00a86b);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px
+background:linear-gradient(135deg,#006400,#00a86b);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px
 }
 .container{
-    max-width:500px;
-    width:100%;
-    background:#fff;
-    border-radius:18px;
-    overflow:hidden;
-    box-shadow:0 15px 40px rgba(0,0,0,.3)
+max-width:500px;width:100%;
+background:#fff;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 15px 40px rgba(0,0,0,.3)
 }
 header{
-    background:#006400;
-    color:#fff;
-    padding:22px;
-    text-align:center
+background:#006400;color:#fff;padding:22px;text-align:center
 }
 header h1{font-size:26px;display:flex;gap:10px;justify-content:center}
 .content{padding:25px}
 label{font-weight:600;margin-top:15px;display:block}
 input{
-    width:100%;
-    padding:12px;
-    border-radius:8px;
-    border:2px solid #ddd;
-    font-size:15px;
-    background:#f3f3f3
+width:100%;padding:12px;border-radius:8px;
+border:2px solid #ddd;font-size:15px;background:#f3f3f3
 }
-input:focus{outline:none;border-color:#00a86b}
 button{
-    width:100%;
-    margin-top:18px;
-    padding:14px;
-    border:none;
-    border-radius:10px;
-    background:#006400;
-    color:#fff;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer
+width:100%;margin-top:18px;padding:14px;
+border:none;border-radius:10px;
+background:#006400;color:#fff;font-size:16px;font-weight:bold;cursor:pointer
 }
-button:hover{background:#008554}
 .loading{text-align:center;display:none;margin-top:15px}
 .spinner{
-    width:30px;height:30px;
-    border:4px solid #ddd;
-    border-left:4px solid #006400;
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-    margin:auto
+width:30px;height:30px;border:4px solid #ddd;
+border-left:4px solid #006400;border-radius:50%;
+animation:spin 1s linear infinite;margin:auto
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 .transaction{display:none;margin-top:25px}
-.status{
-    padding:6px 14px;
-    border-radius:20px;
-    font-weight:bold;
-    font-size:14px
-}
+.status{padding:6px 14px;border-radius:20px;font-weight:bold;font-size:14px}
 .pending{background:#fff3cd;color:#856404}
 .completed{background:#e6f7ee;color:#006400}
 .failed{background:#f8d7da;color:#721c24}
 .response{
-    background:#f0f8f4;
-    border-radius:10px;
-    padding:15px;
-    margin-top:15px;
-    font-family:monospace;
-    font-size:13px;
-    white-space:pre-wrap
+background:#f0f8f4;border-radius:10px;
+padding:15px;margin-top:15px;
+font-family:monospace;font-size:13px;white-space:pre-wrap
 }
-.success-box{
-    display:none;
-    text-align:center;
-    margin-top:25px
-}
+.success-box{display:none;text-align:center;margin-top:25px}
 .success-box a{
-    display:inline-block;
-    margin-top:15px;
-    background:#25D366;
-    color:#fff;
-    padding:14px 22px;
-    border-radius:10px;
-    text-decoration:none;
-    font-weight:bold
+display:inline-block;margin-top:15px;background:#25D366;
+color:#fff;padding:14px 22px;border-radius:10px;
+text-decoration:none;font-weight:bold
 }
+
+/* RECEIPT */
+.receipt{
+display:none;margin-top:25px;border:2px dashed #006400;
+padding:18px;border-radius:12px
+}
+.stamp{
+margin-top:15px;border:2px solid #006400;
+display:inline-block;padding:8px 18px;
+border-radius:50%;font-weight:bold;color:#006400
+}
+
 .notification{
-    position:fixed;
-    top:20px;
-    right:20px;
-    padding:14px 20px;
-    border-radius:10px;
-    color:#fff;
-    opacity:0;
-    transform:translateX(100%);
-    transition:.3s
+position:fixed;top:20px;right:20px;
+padding:14px 20px;border-radius:10px;
+color:#fff;opacity:0;transform:translateX(100%);
+transition:.3s
 }
 .notification.show{opacity:1;transform:translateX(0)}
 .notification.success{background:#00a86b}
@@ -121,38 +90,61 @@ button:hover{background:#008554}
 
 <div class="container">
 <header>
-    <h1><i class="fas fa-money-bill-wave"></i> MPESA PAY</h1>
-    <p>WhatsApp Group Access – KES 50</p>
+<h1><i class="fas fa-money-bill-wave"></i> MPESA PAY</h1>
+<p>Minimum deposit: KES 10</p>
 </header>
 
 <div class="content">
 
-<label>Phone Number (2547XXXXXXXX)</label>
-<input id="phone" placeholder="2547XXXXXXXX">
+<label>Phone Number (07XXXXXXXX)</label>
+<input id="phone" placeholder="0712345678">
 
-<label>Amount (KES)</label>
-<input id="amount" value="50" readonly>
+<label>Amount (KES) — Minimum 10</label>
+<input id="amount" type="number" min="10" placeholder="Enter amount (≥ 10)">
 
-<button onclick="pay()">Pay KES 50</button>
+<button onclick="pay()">Pay Now</button>
 
 <div class="loading" id="loading">
-    <div class="spinner"></div>
-    <p>Sending STK Push…</p>
+<div class="spinner"></div>
+<p>Sending STK Push…</p>
 </div>
 
 <div class="transaction" id="transaction">
-    <p><strong>Status:</strong>
-        <span id="status" class="status pending">PENDING</span>
-    </p>
-    <div class="response" id="response">Waiting for confirmation…</div>
+<p><strong>Status:</strong>
+<span id="status" class="status pending">PENDING</span></p>
+<div class="response" id="response">Waiting for confirmation…</div>
+</div>
+
+<!-- RECEIPT -->
+<div class="receipt" id="receipt">
+<h3 style="color:#006400;text-align:center">
+<i class="fas fa-receipt"></i> Payment Receipt
+</h3>
+
+<p><strong>Receipt No:</strong> <span id="rRef"></span></p>
+<p><strong>Phone:</strong> <span id="rPhone"></span></p>
+<p><strong>Amount Paid:</strong> KES <span id="rAmount"></span></p>
+<p><strong>Date:</strong> <span id="rDate"></span></p>
+
+<p style="margin-top:12px;color:#444">
+Thank you for your payment 🙏  
+We truly appreciate your trust and support.  
+This receipt confirms a successful and verified M-Pesa transaction.
+</p>
+
+<div class="stamp">PAID ✔</div>
+
+<button onclick="printReceipt()" style="margin-top:15px">
+<i class="fas fa-print"></i> Print Receipt
+</button>
 </div>
 
 <div class="success-box" id="successBox">
-    <h3 style="color:#006400">Payment Successful 🎉</h3>
-    <p>Access unlocked</p>
-    <a id="waBtn" target="_blank">
-        <i class="fab fa-whatsapp"></i> Join WhatsApp Group
-    </a>
+<h3 style="color:#006400">Payment Successful 🎉</h3>
+<p>Access unlocked</p>
+<a id="waBtn" target="_blank">
+<i class="fab fa-whatsapp"></i> Continue
+</a>
 </div>
 
 </div>
@@ -161,93 +153,91 @@ button:hover{background:#008554}
 <div class="notification" id="notify"></div>
 
 <script>
-/* ✅ UPDATED PAYMENT API */
-const API_PAY = "https://mpesa-stk.giftedtech.co.ke/api/payJayDigitex.php";
-const API_VERIFY = "https://mpesapi.giftedtech.co.ke/api/verify-transaction.php";
-
-/* 🔐 HASHED WHATSAPP LINK (Base64) */
-const WA_HASH = "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9Gdks2eTVtRTVraktySExJQm52Y05N";
+const API_PAY="https://mpesa-stk.giftedtech.co.ke/api/payJayDigitex.php";
+const API_VERIFY="https://mpesapi.giftedtech.co.ke/api/verify-transaction.php";
+const WA_HASH="aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9Gdks2eTVtRTVraktySExJQm52Y05N";
 let poll=null;
 
 function toast(msg,type){
-    const n=document.getElementById("notify");
-    n.textContent=msg;
-    n.className=`notification show ${type}`;
-    setTimeout(()=>n.className="notification",3000);
+const n=document.getElementById("notify");
+n.textContent=msg;
+n.className=`notification show ${type}`;
+setTimeout(()=>n.className="notification",3000);
 }
 
 async function pay(){
-    const phone=document.getElementById("phone").value.trim();
-    if(!phone.startsWith("254") || phone.length < 12){
-        toast("Invalid phone number","error");
-        return;
-    }
+const raw=document.getElementById("phone").value.trim();
+const amount=Number(document.getElementById("amount").value);
 
-    document.getElementById("loading").style.display="block";
-
-    try{
-        const res = await fetch(API_PAY,{
-            method:"POST",
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({
-                phoneNumber: phone,
-                amount: 50
-            })
-        });
-
-        const data = await res.json();
-        if(!data.success) throw new Error(data.error || "Payment failed");
-
-        document.getElementById("transaction").style.display="block";
-        toast("STK Push sent","success");
-        pollStatus(data.CheckoutRequestID);
-
-    }catch(e){
-        toast(e.message,"error");
-    }finally{
-        document.getElementById("loading").style.display="none";
-    }
+if(!/^07\d{8}$/.test(raw)){
+toast("Enter valid phone number (07XXXXXXXX)","error");return;
+}
+if(!amount || amount < 10){
+toast("Minimum deposit is KES 10","error");return;
 }
 
-function pollStatus(id){
-    let tries=0;
-    poll=setInterval(async()=>{
-        tries++;
-        if(tries>60){
-            clearInterval(poll);
-            return;
-        }
+const phone="254"+raw.substring(1);
+document.getElementById("loading").style.display="block";
 
-        const r = await fetch(API_VERIFY,{
-            method:"POST",
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({checkoutRequestId:id})
-        });
+try{
+const res=await fetch(API_PAY,{
+method:"POST",
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({phoneNumber:phone,amount})
+});
+const data=await res.json();
+if(!data.success) throw new Error("Payment failed");
 
-        const d = await r.json();
-        document.getElementById("response").textContent = JSON.stringify(d,null,2);
+document.getElementById("transaction").style.display="block";
+toast("STK Push sent","success");
+pollStatus(data.CheckoutRequestID,raw,amount);
 
-        const s=document.getElementById("status");
-        s.textContent=d.status.toUpperCase();
-        s.className=`status ${d.status}`;
+}catch(e){toast(e.message,"error")}
+finally{document.getElementById("loading").style.display="none"}
+}
 
-        if(d.status==="completed"){
-            clearInterval(poll);
-            toast("Payment successful","success");
+function pollStatus(id,rawPhone,amount){
+poll=setInterval(async()=>{
+const r=await fetch(API_VERIFY,{
+method:"POST",
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({checkoutRequestId:id})
+});
+const d=await r.json();
+document.getElementById("response").textContent=JSON.stringify(d,null,2);
 
-            /* 🔓 DECODE LINK ONLY AFTER SUCCESS */
-            document.getElementById("waBtn").href = atob(WA_HASH);
-            document.getElementById("successBox").style.display="block";
-        }
+const s=document.getElementById("status");
+s.textContent=d.status.toUpperCase();
+s.className=`status ${d.status}`;
 
-        if(d.status==="failed"){
-            clearInterval(poll);
-            toast("Payment failed","error");
-        }
-    },5000);
+if(d.status==="completed"){
+clearInterval(poll);
+toast("Payment successful","success");
+
+document.getElementById("rRef").textContent=d.data?.MpesaReceiptNumber || "CONFIRMED";
+document.getElementById("rPhone").textContent=rawPhone;
+document.getElementById("rAmount").textContent=amount;
+document.getElementById("rDate").textContent=new Date().toLocaleString();
+document.getElementById("receipt").style.display="block";
+
+document.getElementById("waBtn").href=atob(WA_HASH);
+document.getElementById("successBox").style.display="block";
+}
+
+if(d.status==="failed"){
+clearInterval(poll);
+toast("Payment failed","error");
+}
+},5000);
+}
+
+function printReceipt(){
+const c=document.getElementById("receipt").innerHTML;
+const w=window.open("","","width=400,height=600");
+w.document.write(`<h3>Official Payment Receipt</h3>${c}`);
+w.print();
 }
 </script>
 
 </body>
 </html>
-
