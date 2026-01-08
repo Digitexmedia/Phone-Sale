@@ -62,8 +62,6 @@ display:inline-block;margin-top:15px;background:#25D366;
 color:#fff;padding:14px 22px;border-radius:10px;
 text-decoration:none;font-weight:bold
 }
-
-/* RECEIPT */
 .receipt{
 display:none;margin-top:25px;border:2px dashed #006400;
 padding:18px;border-radius:12px
@@ -73,7 +71,6 @@ margin-top:15px;border:2px solid #006400;
 display:inline-block;padding:8px 18px;
 border-radius:50%;font-weight:bold;color:#006400
 }
-
 .notification{
 position:fixed;top:20px;right:20px;
 padding:14px 20px;border-radius:10px;
@@ -96,7 +93,7 @@ transition:.3s
 
 <div class="content">
 
-<label>Phone Number (07XXXXXXXX)</label>
+<label>Phone Number (07XXXXXXXX or 01XXXXXXXX)</label>
 <input id="phone" placeholder="0712345678">
 
 <label>Amount (KES) — Minimum 10</label>
@@ -115,7 +112,6 @@ transition:.3s
 <div class="response" id="response">Waiting for confirmation…</div>
 </div>
 
-<!-- RECEIPT -->
 <div class="receipt" id="receipt">
 <h3 style="color:#006400;text-align:center">
 <i class="fas fa-receipt"></i> Payment Receipt
@@ -129,7 +125,7 @@ transition:.3s
 <p style="margin-top:12px;color:#444">
 Thank you for your payment 🙏  
 We truly appreciate your trust and support.  
-This receipt confirms a successful and verified M-Pesa transaction.
+This receipt confirms a successful M-Pesa transaction.
 </p>
 
 <div class="stamp">PAID ✔</div>
@@ -169,11 +165,13 @@ async function pay(){
 const raw=document.getElementById("phone").value.trim();
 const amount=Number(document.getElementById("amount").value);
 
-if(!/^07\d{8}$/.test(raw)){
-toast("Enter valid phone number (07XXXXXXXX)","error");return;
+if(!/^(07|01)\d{8}$/.test(raw)){
+toast("Enter valid phone (07XXXXXXXX or 01XXXXXXXX)","error");
+return;
 }
-if(!amount || amount < 10){
-toast("Minimum deposit is KES 10","error");return;
+if(!amount || amount<10){
+toast("Minimum deposit is KES 10","error");
+return;
 }
 
 const phone="254"+raw.substring(1);
